@@ -1,6 +1,6 @@
 import { Head, useForm } from '@inertiajs/react';
 import { LoaderCircle } from 'lucide-react';
-import { FormEventHandler } from 'react';
+import { FormEventHandler, useState } from 'react';
 
 import InputError from '@/components/input-error';
 import { Button } from '@/components/ui/button';
@@ -28,6 +28,9 @@ export default function ResetPassword({ token, email }: ResetPasswordProps) {
         password_confirmation: '',
     });
 
+    const [showPassword, setShowPassword] = useState<boolean>(false);
+    const [showConfirmPassword, setShowConfirmPassword] = useState<boolean>(false);
+
     const submit: FormEventHandler = (e) => {
         e.preventDefault();
         post(route('password.store'), {
@@ -36,13 +39,13 @@ export default function ResetPassword({ token, email }: ResetPasswordProps) {
     };
 
     return (
-        <AuthLayout title="Reset password" description="Please enter your new password below">
-            <Head title="Reset password" />
+        <AuthLayout title="Restablecer contraseña" description="Introduzca su nueva contraseña a continuación">
+            <Head title="Restablecer contraseña" />
 
             <form onSubmit={submit}>
                 <div className="grid gap-6">
                     <div className="grid gap-2">
-                        <Label htmlFor="email">Email</Label>
+                        <Label htmlFor="email">Correo electrónico</Label>
                         <Input
                             id="email"
                             type="email"
@@ -56,40 +59,50 @@ export default function ResetPassword({ token, email }: ResetPasswordProps) {
                         <InputError message={errors.email} className="mt-2" />
                     </div>
 
-                    <div className="grid gap-2">
-                        <Label htmlFor="password">Password</Label>
+                    <div className="relative grid gap-2">
+                        <Label htmlFor="password">Contraseña</Label>
                         <Input
                             id="password"
-                            type="password"
+                            type={showPassword ? 'text' : 'password'}
                             name="password"
                             autoComplete="new-password"
                             value={data.password}
                             className="mt-1 block w-full"
                             autoFocus
                             onChange={(e) => setData('password', e.target.value)}
-                            placeholder="Password"
+                            placeholder="********"
                         />
+                        <div className="absolute top-0 right-0 mt-8 mr-3 flex items-center justify-between">
+                            <div className="cursor-pointer" onClick={() => setShowPassword(!showPassword)} tabIndex={-1}>
+                                {showPassword ? <i className="fa-solid fa-eye-slash fa-sm"></i> : <i className="fa-solid fa-eye fa-sm"></i>}
+                            </div>
+                        </div>
                         <InputError message={errors.password} />
                     </div>
 
-                    <div className="grid gap-2">
-                        <Label htmlFor="password_confirmation">Confirm password</Label>
+                    <div className="grid gap-2 relative">
+                        <Label htmlFor="password_confirmation">Confirmar contraseña</Label>
                         <Input
                             id="password_confirmation"
-                            type="password"
+                            type={showConfirmPassword ? 'text' : 'password'}
                             name="password_confirmation"
                             autoComplete="new-password"
                             value={data.password_confirmation}
                             className="mt-1 block w-full"
                             onChange={(e) => setData('password_confirmation', e.target.value)}
-                            placeholder="Confirm password"
+                            placeholder="Confirmar contraseña"
                         />
+                        <div className="absolute top-0 right-0 mt-8 mr-3 flex items-center justify-between">
+                            <div className="cursor-pointer" onClick={() => setShowConfirmPassword(!showConfirmPassword)} tabIndex={-1}>
+                                {showConfirmPassword ? <i className="fa-solid fa-eye-slash fa-sm"></i> : <i className="fa-solid fa-eye fa-sm"></i>}
+                            </div>
+                        </div>
                         <InputError message={errors.password_confirmation} className="mt-2" />
                     </div>
 
                     <Button type="submit" className="mt-4 w-full" disabled={processing}>
                         {processing && <LoaderCircle className="h-4 w-4 animate-spin" />}
-                        Reset password
+                        Restablecer contraseña
                     </Button>
                 </div>
             </form>
