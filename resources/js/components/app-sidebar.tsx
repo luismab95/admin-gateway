@@ -4,37 +4,37 @@ import { NavUser } from '@/components/nav-user';
 import { Sidebar, SidebarContent, SidebarFooter, SidebarHeader, SidebarMenu, SidebarMenuButton, SidebarMenuItem } from '@/components/ui/sidebar';
 import { type NavItem } from '@/types';
 import { Link } from '@inertiajs/react';
-import { BookOpen, Folder, LayoutGrid } from 'lucide-react';
+import { LayoutGrid } from 'lucide-react';
 import AppLogo from './app-logo';
 
 const mainNavItems: NavItem[] = [
     {
-        title: 'Dashboard',
+        title: 'Inicio',
         href: '/dashboard',
         icon: LayoutGrid,
     },
 ];
 
 const footerNavItems: NavItem[] = [
-    {
-        title: 'Repository',
-        href: 'https://github.com/laravel/react-starter-kit',
-        icon: Folder,
-    },
-    {
-        title: 'Documentation',
-        href: 'https://laravel.com/docs/starter-kits#react',
-        icon: BookOpen,
-    },
+    // {
+    //     title: 'Repository',
+    //     href: 'https://github.com/laravel/react-starter-kit',
+    //     icon: Folder,
+    // },
+    // {
+    //     title: 'Documentation',
+    //     href: 'https://laravel.com/docs/starter-kits#react',
+    //     icon: BookOpen,
+    // },
 ];
 
 export function AppSidebar() {
     return (
-        <Sidebar collapsible="icon" variant="inset">
-            <SidebarHeader>
+        <Sidebar collapsible="icon" variant="inset" className="bg-primary">
+            <SidebarHeader className="bg-primary">
                 <SidebarMenu>
                     <SidebarMenuItem>
-                        <SidebarMenuButton size="lg" asChild>
+                        <SidebarMenuButton className='hover:bg-transparent focus:bg-transparent' size="lg" asChild>
                             <Link href="/dashboard" prefetch>
                                 <AppLogo />
                             </Link>
@@ -43,11 +43,11 @@ export function AppSidebar() {
                 </SidebarMenu>
             </SidebarHeader>
 
-            <SidebarContent>
+            <SidebarContent className="bg-primary text-white">
                 <NavMain items={mainNavItems} />
             </SidebarContent>
 
-            <SidebarFooter>
+            <SidebarFooter className="bg-primary">
                 <NavFooter items={footerNavItems} className="mt-auto" />
                 <NavUser />
             </SidebarFooter>

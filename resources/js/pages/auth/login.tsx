@@ -1,6 +1,6 @@
 import { Head, useForm } from '@inertiajs/react';
 import { LoaderCircle } from 'lucide-react';
-import { FormEventHandler } from 'react';
+import { FormEventHandler, useState } from 'react';
 
 import InputError from '@/components/input-error';
 import TextLink from '@/components/text-link';
@@ -27,6 +27,7 @@ export default function Login({ status, canResetPassword }: LoginProps) {
         password: '',
         remember: false,
     });
+    const [showPassword, setShowPassword] = useState<boolean>(false);
 
     const submit: FormEventHandler = (e) => {
         e.preventDefault();
@@ -36,13 +37,13 @@ export default function Login({ status, canResetPassword }: LoginProps) {
     };
 
     return (
-        <AuthLayout title="Log in to your account" description="Enter your email and password below to log in">
-            <Head title="Log in" />
+        <AuthLayout title="Acceda a su cuenta" description="Introduzca su correo electrónico y contraseña para iniciar sesiónEntrar en su cuenta">
+            <Head title="Iniciar sesión" />
 
             <form className="flex flex-col gap-6" onSubmit={submit}>
                 <div className="grid gap-6">
                     <div className="grid gap-2">
-                        <Label htmlFor="email">Email address</Label>
+                        <Label htmlFor="email">Dirección de correo electrónico</Label>
                         <Input
                             id="email"
                             type="email"
@@ -52,54 +53,62 @@ export default function Login({ status, canResetPassword }: LoginProps) {
                             autoComplete="email"
                             value={data.email}
                             onChange={(e) => setData('email', e.target.value)}
-                            placeholder="email@example.com"
+                            placeholder="tu@email.com"
                         />
                         <InputError message={errors.email} />
                     </div>
 
-                    <div className="grid gap-2">
+                    <div className="relative grid gap-2">
                         <div className="flex items-center">
-                            <Label htmlFor="password">Password</Label>
+                            <Label htmlFor="password">Contraseña</Label>
                             {canResetPassword && (
                                 <TextLink href={route('password.request')} className="ml-auto text-sm" tabIndex={5}>
-                                    Forgot password?
+                                    ¿Ha olvidado su contraseña?
                                 </TextLink>
                             )}
                         </div>
                         <Input
                             id="password"
-                            type="password"
+                            type={showPassword ? 'text' : 'password'}
                             required
                             tabIndex={2}
                             autoComplete="current-password"
                             value={data.password}
                             onChange={(e) => setData('password', e.target.value)}
-                            placeholder="Password"
+                            placeholder="**********"
                         />
+                        <div className="absolute top-0 right-0 mt-8 mr-3 flex items-center justify-between">
+                            <div className="cursor-pointer" onClick={() => setShowPassword(!showPassword)} tabIndex={-1}>
+                                {showPassword ? <i className="fa-solid fa-eye-slash fa-sm"></i> : <i className="fa-solid fa-eye fa-sm"></i>}
+                            </div>
+                        </div>
                         <InputError message={errors.password} />
                     </div>
 
                     <div className="flex items-center space-x-3">
                         <Checkbox
+                            className="cursor-pointer"
                             id="remember"
                             name="remember"
                             checked={data.remember}
                             onClick={() => setData('remember', !data.remember)}
                             tabIndex={3}
                         />
-                        <Label htmlFor="remember">Remember me</Label>
+                        <Label htmlFor="remember" className="cursor-pointer">
+                            Recuérdame
+                        </Label>
                     </div>
 
                     <Button type="submit" className="mt-4 w-full" tabIndex={4} disabled={processing}>
                         {processing && <LoaderCircle className="h-4 w-4 animate-spin" />}
-                        Log in
+                        Iniciar sesión
                     </Button>
                 </div>
 
                 <div className="text-muted-foreground text-center text-sm">
-                    Don't have an account?{' '}
+                    ¿No tienes una cuenta?{' '}
                     <TextLink href={route('register')} tabIndex={5}>
-                        Sign up
+                        Regístrate
                     </TextLink>
                 </div>
             </form>

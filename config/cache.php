@@ -90,6 +90,16 @@ return [
             'driver' => 'octane',
         ],
 
+        'mongodb' => [
+            'driver' => 'mongodb',
+            'connection' => 'mongodb',
+            'collection' => 'cache',
+            'lock_connection' => 'mongodb',
+            'lock_collection' => 'cache_locks',
+            'lock_lottery' => [0, 100],
+            'lock_timeout' => 86400,
+        ],
+
     ],
 
     /*
@@ -103,6 +113,6 @@ return [
     |
     */
 
-    'prefix' => env('CACHE_PREFIX', Str::slug(env('APP_NAME', 'laravel'), '_').'_cache_'),
+    'prefix' => env('CACHE_PREFIX', Str::slug(env('APP_NAME', 'laravel'), '_') . '_cache_'),
 
 ];
