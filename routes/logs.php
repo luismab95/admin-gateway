@@ -2,8 +2,9 @@
 
 use App\Http\Controllers\LogsController;
 use Illuminate\Support\Facades\Route;
+use App\Http\Middleware\CheckConnection;
 
-Route::middleware('auth')->group(function () {
+Route::middleware(['auth', CheckConnection::class])->group(function () {
 
     Route::get('logs', [LogsController::class, 'index'])->name('logs.index');
     // Route::patch('settings/profile', [ProfileController::class, 'update'])->name('profile.update');

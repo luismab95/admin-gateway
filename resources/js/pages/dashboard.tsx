@@ -1,7 +1,9 @@
 import { PlaceholderPattern } from '@/components/ui/placeholder-pattern';
 import AppLayout from '@/layouts/app-layout';
-import { type BreadcrumbItem } from '@/types';
-import { Head } from '@inertiajs/react';
+import { type BreadcrumbItem, type Flash } from '@/types';
+import { Head, usePage } from '@inertiajs/react';
+import { useEffect } from 'react';
+import { Bounce, toast, ToastContainer } from 'react-toastify';
 
 const breadcrumbs: BreadcrumbItem[] = [
     {
@@ -11,8 +13,40 @@ const breadcrumbs: BreadcrumbItem[] = [
 ];
 
 export default function Dashboard() {
+    const toastId = 'success-api-gateway';
+
+    const { flash } = usePage<{ flash: Flash }>().props;
+
+    if (flash.success !== undefined) toast.success(flash.success);
+
+    useEffect(() => {
+        if (flash.success !== undefined && flash.success !== '') {
+            if (!toast.isActive(toastId)) {
+                toast.success(flash.success, {
+                    toastId,
+                    onClose: () => {
+                        window.location.reload();
+                    },
+                });
+            }
+        }
+    }, [flash.success]);
+
     return (
         <AppLayout breadcrumbs={breadcrumbs}>
+            <ToastContainer
+                position="top-right"
+                autoClose={2000}
+                hideProgressBar={false}
+                newestOnTop={false}
+                closeOnClick={false}
+                rtl={false}
+                pauseOnFocusLoss
+                draggable
+                pauseOnHover
+                theme="light"
+                transition={Bounce}
+            />
             <Head title="Panel de control" />
             <div className="flex h-full flex-1 flex-col gap-4 rounded-xl p-4">
                 <div className="grid auto-rows-min gap-4 md:grid-cols-3">
