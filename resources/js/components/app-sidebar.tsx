@@ -4,15 +4,30 @@ import { NavUser } from '@/components/nav-user';
 import { Sidebar, SidebarContent, SidebarFooter, SidebarHeader, SidebarMenu, SidebarMenuButton, SidebarMenuItem } from '@/components/ui/sidebar';
 import { type NavItem } from '@/types';
 import { Link } from '@inertiajs/react';
-import { LayoutGrid } from 'lucide-react';
+import { LayoutGrid, Logs, Server, FileCog } from 'lucide-react';
 import AppLogo from './app-logo';
 
 const mainNavItems: NavItem[] = [
     {
-        title: 'Inicio',
+        title: 'Panel',
         href: '/dashboard',
         icon: LayoutGrid,
     },
+    {
+        title: 'Servicios',
+        href: '/services',
+        icon: Server,
+    },
+    {
+        title: 'Logs',
+        href: '/logs',
+        icon: Logs,
+    },
+    // {
+    //     title: 'Parámetros',
+    //     href: '/parameters',
+    //     icon: FileCog,
+    // },
 ];
 
 const footerNavItems: NavItem[] = [
@@ -34,7 +49,7 @@ export function AppSidebar() {
             <SidebarHeader className="bg-primary">
                 <SidebarMenu>
                     <SidebarMenuItem>
-                        <SidebarMenuButton className='hover:bg-transparent focus:bg-transparent' size="lg" asChild>
+                        <SidebarMenuButton className="hover:bg-transparent focus:bg-transparent" size="lg" asChild>
                             <Link href="/dashboard" prefetch>
                                 <AppLogo />
                             </Link>
