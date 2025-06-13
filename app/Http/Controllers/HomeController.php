@@ -5,7 +5,6 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use Inertia\Inertia;
 use App\Models\Connection as ServerConnection;
-use Dotenv\Util\Str;
 use Illuminate\Support\Facades\Http;
 use Illuminate\Http\Client\RequestException;
 
@@ -73,9 +72,8 @@ class HomeController extends Controller
 
         $connection->save();
 
-        return Inertia::render('dashboard', [
-            'success' => 'Conexión creada exitosamente.'
-        ]);
+        return redirect()->back()
+            ->with('success', 'Conexión establecida correctamente.');
     }
 
     /**
