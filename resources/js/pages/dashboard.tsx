@@ -25,7 +25,6 @@ export default function Dashboard() {
                 toast.success(flash.success, {
                     toastId,
                     onClose: () => {
-                        console.log('Toast cerrado');
                         window.location.reload();
                     },
                 });
