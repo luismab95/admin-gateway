@@ -1,7 +1,7 @@
 <?php
 
 use Illuminate\Support\Facades\Route;
-use Inertia\Inertia;
+use App\Http\Controllers\HomeController;
 
 
 Route::get('/', function () {
@@ -10,9 +10,8 @@ Route::get('/', function () {
 
 
 Route::middleware(['auth', 'verified'])->group(function () {
-    Route::get('dashboard', function () {
-        return Inertia::render('dashboard');
-    })->name('dashboard');
+    Route::get('dashboard', [HomeController::class, 'index'])->name('dashboard.index');
+    Route::post('dashboard', [HomeController::class, 'store'])->name('dashboard.store');
 });
 
 require __DIR__ . '/logs.php';
