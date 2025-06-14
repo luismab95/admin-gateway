@@ -2,7 +2,10 @@
 
 namespace App\Http\Controllers;
 
+
+use App\Models\Connection as ServerConnection;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Http;
 use Inertia\Inertia;
 
 class LogsController extends Controller
@@ -12,7 +15,69 @@ class LogsController extends Controller
      */
     public function index()
     {
-        return Inertia::render('logs/list-logs');
+
+        $type = "error";
+
+        $connection = ServerConnection::first();
+
+        $url = $connection->protocol . "://" . $connection->host . ":" . $connection->port;
+
+        $response = Http::get($url . '/logs-gateway/' . $type . '.log', []);
+
+
+        if ($response->ok()) {
+            $log = $response->body();
+
+            return Inertia::render('logs/list-logs', [
+                'filters' => [],
+                'log' => $log
+            ]);
+        } else {
+            return Inertia::render('logs/list-logs', [
+                'filters' => [],
+                'log' => 'No se pudo obtener el archivo.'
+            ]);
+        }
+    }
+
+
+    public function filters(Request $request)
+    {
+
+        $type = $request->input('type', 'error');
+        $search = $request->input('search');
+
+
+        $connection = ServerConnection::first();
+
+        $url = $connection->protocol . "://" . $connection->host . ":" . $connection->port;
+
+        $response = Http::get($url . '/logs-gateway/' . $type . '.log', []);
+
+
+        if ($response->ok()) {
+            $log = $response->body();
+
+            if ($search) {
+                $lines = explode(PHP_EOL, $log);
+
+                $filteredLines = array_filter($lines, function ($line) use ($search) {
+                    return stripos($line, $search) !== false;
+                });
+
+                $log = implode(PHP_EOL, $filteredLines);
+            }
+
+            return Inertia::render('logs/list-logs', [
+                'filters' => $request->only(['search', 'type']),
+                'log' => $log
+            ]);
+        } else {
+            return Inertia::render('logs/list-logs', [
+                'filters' => $request->only(['search', 'type']),
+                'log' => 'No se pudo obtener el archivo.'
+            ]);
+        }
     }
 
     /**

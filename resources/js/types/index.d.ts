@@ -58,7 +58,6 @@ export interface Service {
     port: string;
     route: string;
     status: boolean;
-    middlewares: { name: string; props: any }[];
     created_at: string;
     updated_at: string;
 }
@@ -78,4 +77,9 @@ interface PaginatedResponse<T> {
     from: number | null;
     to: number | null;
     links: PaginationLink[];
+}
+
+export interface Traffic {
+    time: string;
+    requests: string;
 }

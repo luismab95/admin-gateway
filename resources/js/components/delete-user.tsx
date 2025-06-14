@@ -33,15 +33,15 @@ export default function DeleteUser() {
     return (
         <div className="space-y-6">
             <HeadingSmall title="Eliminar cuenta" description="Elimina tu cuenta y todos sus recursos" />
-            <div className="space-y-4 rounded-lg border border-red-100 bg-red-50 p-4 dark:border-red-200/10 dark:bg-red-700/10">
+            <div className="min-h-32 relative space-y-4 rounded-lg border border-red-100 bg-red-50 p-4 dark:border-red-200/10 dark:bg-red-700/10">
                 <div className="relative space-y-0.5 text-red-600 dark:text-red-100">
                     <p className="font-medium">Advertencia</p>
                     <p className="text-sm">Por favor, proceda con precaución, esto no se puede deshacer.</p>
                 </div>
 
                 <Dialog>
-                    <DialogTrigger asChild>
-                        <Button variant="destructive">Eliminar cuenta</Button>
+                    <DialogTrigger className='relative'  asChild>
+                        <Button variant="destructive" className='absolute right-4 bottom-3 '>Eliminar cuenta</Button>
                     </DialogTrigger>
                     <DialogContent>
                         <DialogTitle>¿Seguro/a que quieres eliminar tu cuenta?</DialogTitle>
@@ -83,6 +83,7 @@ export default function DeleteUser() {
                         </form>
                     </DialogContent>
                 </Dialog>
+
             </div>
         </div>
     );

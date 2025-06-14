@@ -10,8 +10,14 @@ Route::get('/', function () {
 
 
 Route::middleware(['auth', 'verified'])->group(function () {
-    Route::get('dashboard', [HomeController::class, 'index'])->name('dashboard.index');
+
+
+    Route::get('dashboard', [HomeController::class, 'index'])->name('dashboard');
     Route::post('dashboard', [HomeController::class, 'store'])->name('dashboard.store');
+});
+
+Route::fallback(function () {
+    return response()->view('errors.404', [], 404);
 });
 
 require __DIR__ . '/logs.php';

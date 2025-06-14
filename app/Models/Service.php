@@ -4,7 +4,7 @@ namespace App\Models;
 
 use MongoDB\Laravel\Eloquent\Model;
 
-class Services extends Model
+class Service extends Model
 {
     protected $connection = 'mongodb';
     protected $collection = 'services';
@@ -22,13 +22,11 @@ class Services extends Model
         'port',
         'route',
         'status',
-        'middlewares',
     ];
 
     protected $casts = [
         'status' => 'boolean',
         'port' => 'integer',
-        // 'middlewares' => 'array',
     ];
 
     public $timestamps = true;

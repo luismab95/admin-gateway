@@ -165,7 +165,7 @@
         }
 
         .mt-4 {
-            margin-top: 1rem
+            margin-top: 1.2rem
         }
 
         .ml-4 {
@@ -543,6 +543,12 @@
                 <div class="ml-4 text-lg text-gray-500 uppercase tracking-wider">
                     No Encontrado
                 </div>
+
+            </div>
+            <div class="w-full flex justify-center items-center p-4 mt-4">
+                <a href="/" class="px-6 py-2 rounded-lg bg-[#2c83c9] text-white font-semibold shadow hover:bg-blue-700 transition-colors duration-200 focus:outline-none focus:ring-2 focus:ring-blue-400 focus:ring-opacity-50" style="padding-left:1.5rem;padding-right:1.5rem;padding-top:0.5rem;padding-bottom:0.5rem;border-radius:0.5rem;background-color:#2563eb;color:#fff;font-weight:600;box-shadow:0 1px 3px 0 rgba(0,0,0,.1),0 1px 2px 0 rgba(0,0,0,.06);transition-property:background-color;transition-duration:200ms;outline:none;">
+                    Volver al Inicio
+                </a>
             </div>
         </div>
     </div>
