@@ -4,9 +4,11 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use Inertia\Inertia;
-use App\Models\Connection as ServerConnection;
 use Illuminate\Support\Facades\Http;
 use Illuminate\Http\Client\RequestException;
+use App\Models\Connection as ServerConnection;
+use App\Models\Traffic;
+use App\Models\Service;
 
 class HomeController extends Controller
 {
@@ -22,7 +24,18 @@ class HomeController extends Controller
             return Inertia::render('initial-config');
         }
 
-        return Inertia::render('dashboard');
+        $services = Service::all();
+        $activeCount = $services->where('status', true)->count();
+        $inactiveCount = $services->where('status', false)->count();
+
+
+        $traffics = Traffic::limit(60)->get();
+
+        return Inertia::render('dashboard', [
+            'activeCount' => $activeCount,
+            'inactiveCount' => $inactiveCount,
+            'traffics' => $traffics,
+        ]);
     }
 
     /**
@@ -74,30 +87,6 @@ class HomeController extends Controller
 
         return redirect()->back()
             ->with('success', 'Conexión establecida correctamente.');
-    }
-
-    /**
-     * Display the specified resource.
-     */
-    public function show(string $id)
-    {
-        //
-    }
-
-    /**
-     * Update the specified resource in storage.
-     */
-    public function update(Request $request, string $id)
-    {
-        //
-    }
-
-    /**
-     * Remove the specified resource from storage.
-     */
-    public function destroy(string $id)
-    {
-        //
     }
 
 

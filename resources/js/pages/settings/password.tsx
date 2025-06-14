@@ -134,7 +134,7 @@ export default function Password() {
                             <InputError message={errors.password_confirmation} />
                         </div>
 
-                        <div className="flex items-center gap-4">
+                        <div className="flex items-center justify-end gap-4">
                             <Button disabled={processing}>Guardar contraseña</Button>
 
                             <Transition

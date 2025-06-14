@@ -46,7 +46,25 @@ export default function ListServices() {
         return () => clearTimeout(delay);
     }, [search, status, perPage]);
 
-    const handleEdit = (service: Service) => {};
+    const handleEdit = (service: Service) => {
+        router.get(
+            '/services/' + service.id,
+            {},
+            {
+                onSuccess: (data) => {
+                    const notify = data.props.flash as Flash;
+                    if (notify.success !== null) {
+                        toast.success(notify.success);
+                    }
+
+                    if (notify.error !== null) {
+                        toast.error(notify.error);
+                    }
+                },
+                preserveScroll: true,
+            },
+        );
+    };
 
     const handleDelete = (service: Service) => {
         router.delete('/services', {
@@ -64,6 +82,10 @@ export default function ListServices() {
             data: { id: service.id },
             preserveScroll: true,
         });
+    };
+
+    const handleNew = () => {
+        router.get('/services/add');
     };
 
     const handleStatus = (service: Service) => {
@@ -110,7 +132,7 @@ export default function ListServices() {
                         <p className="text-muted-foreground text-left text-sm">Aquí puedes ver y gestionar todos los servicios disponibles.</p>
                     </div>
                     <div className="flex w-full items-center justify-end">
-                        <Button type="button" className="mt-4 w-auto" tabIndex={4}>
+                        <Button onClick={() => handleNew()} type="button" className="mt-4 w-auto" tabIndex={4}>
                             <SquarePlus className="h-5 w-5 text-white" />
                             Nuevo
                         </Button>
@@ -132,7 +154,7 @@ export default function ListServices() {
 
                         <Select value={status} onValueChange={(value) => setStatus(value)}>
                             <SelectTrigger className="w-full md:w-[180px]">
-                                <SelectValue placeholder="Estado..." />
+                                <SelectValue placeholder="Estado" />
                             </SelectTrigger>
                             <SelectContent>
                                 <SelectGroup>
@@ -310,7 +332,7 @@ export default function ListServices() {
                     <div className="flex w-full flex-col items-center justify-between py-2 md:flex-row">
                         <Select value={perPage} onValueChange={(value) => setPerPage(value)}>
                             <SelectTrigger className="w-full md:w-[180px]">
-                                <SelectValue placeholder="Estado..." />
+                                <SelectValue placeholder="Items" />
                             </SelectTrigger>
                             <SelectContent>
                                 <SelectGroup>
