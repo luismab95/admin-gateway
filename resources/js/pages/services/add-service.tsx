@@ -67,9 +67,8 @@ export default function AddService() {
             <ServicesLayout>
                 <div className="space-y-6">
                     <HeadingSmall title="Agregar servicio" description=" Completa los campos para agregar un nuevo servicio en tu Api Gateway." />
+                    <ServiceForm onSubmit={submit} data={data} processing={processing} setData={setData} errors={errors} />
                 </div>
-
-                <ServiceForm onSubmit={submit} data={data} processing={processing} setData={setData} errors={errors} />
             </ServicesLayout>
         </AppLayout>
     );

@@ -22,17 +22,22 @@ class LogsController extends Controller
 
         $url = $connection->protocol . "://" . $connection->host . ":" . $connection->port;
 
-        $response = Http::get($url . '/logs-gateway/' . $type . '.log', []);
+        try {
+            $response = Http::get($url . '/logs-gateway/' . $type . '.log', []);
+            if ($response->ok()) {
+                $log = $response->body();
 
-
-        if ($response->ok()) {
-            $log = $response->body();
-
-            return Inertia::render('logs/list-logs', [
-                'filters' => [],
-                'log' => $log
-            ]);
-        } else {
+                return Inertia::render('logs/list-logs', [
+                    'filters' => [],
+                    'log' => $log
+                ]);
+            } else {
+                return Inertia::render('logs/list-logs', [
+                    'filters' => [],
+                    'log' => 'No se pudo obtener el archivo.'
+                ]);
+            }
+        } catch (\Exception $e) {
             return Inertia::render('logs/list-logs', [
                 'filters' => [],
                 'log' => 'No se pudo obtener el archivo.'
@@ -51,28 +56,35 @@ class LogsController extends Controller
         $connection = ServerConnection::first();
 
         $url = $connection->protocol . "://" . $connection->host . ":" . $connection->port;
+        try {
 
-        $response = Http::get($url . '/logs-gateway/' . $type . '.log', []);
+            $response = Http::get($url . '/logs-gateway/' . $type . '.log', []);
 
 
-        if ($response->ok()) {
-            $log = $response->body();
+            if ($response->ok()) {
+                $log = $response->body();
 
-            if ($search) {
-                $lines = explode(PHP_EOL, $log);
+                if ($search) {
+                    $lines = explode(PHP_EOL, $log);
 
-                $filteredLines = array_filter($lines, function ($line) use ($search) {
-                    return stripos($line, $search) !== false;
-                });
+                    $filteredLines = array_filter($lines, function ($line) use ($search) {
+                        return stripos($line, $search) !== false;
+                    });
 
-                $log = implode(PHP_EOL, $filteredLines);
+                    $log = implode(PHP_EOL, $filteredLines);
+                }
+
+                return Inertia::render('logs/list-logs', [
+                    'filters' => $request->only(['search', 'type']),
+                    'log' => $log
+                ]);
+            } else {
+                return Inertia::render('logs/list-logs', [
+                    'filters' => $request->only(['search', 'type']),
+                    'log' => 'No se pudo obtener el archivo.'
+                ]);
             }
-
-            return Inertia::render('logs/list-logs', [
-                'filters' => $request->only(['search', 'type']),
-                'log' => $log
-            ]);
-        } else {
+        } catch (\Exception $e) {
             return Inertia::render('logs/list-logs', [
                 'filters' => $request->only(['search', 'type']),
                 'log' => 'No se pudo obtener el archivo.'

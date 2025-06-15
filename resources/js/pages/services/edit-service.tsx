@@ -13,7 +13,7 @@ const breadcrumbs: BreadcrumbItem[] = [
     },
     {
         title: 'Editar',
-        href: '/services/edit',
+        href: '/services/',
     },
 ];
 
@@ -84,9 +84,8 @@ export default function EditService() {
             <ServicesLayout>
                 <div className="space-y-6">
                     <HeadingSmall title="Editar servicio" description=" Completa los campos para editar el servicio en tu Api Gateway." />
+                    <ServiceForm onSubmit={submit} data={data} processing={processing} setData={setData} errors={errors} />
                 </div>
-
-                <ServiceForm onSubmit={submit} data={data} processing={processing} setData={setData} errors={errors} />
             </ServicesLayout>
         </AppLayout>
     );

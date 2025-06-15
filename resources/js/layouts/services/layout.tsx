@@ -6,10 +6,10 @@ import { type NavItem } from '@/types';
 import { Link } from '@inertiajs/react';
 import { type PropsWithChildren } from 'react';
 
-const sidebarNavItems: NavItem[] = [
+let sidebarNavItems: NavItem[] = [
     {
         title: 'Información Básica',
-        href: '/services/add',
+        href: '',
         icon: null,
     },
 ];
@@ -19,8 +19,6 @@ export default function ServicesLayout({ children }: PropsWithChildren) {
     if (typeof window === 'undefined') {
         return null;
     }
-
-    const currentPath = window.location.pathname;
 
     return (
         <div className="px-4 py-6">
@@ -36,9 +34,7 @@ export default function ServicesLayout({ children }: PropsWithChildren) {
                                     size="sm"
                                     variant="ghost"
                                     asChild
-                                    className={cn('w-full justify-start', {
-                                        'bg-muted': currentPath === item.href,
-                                    })}
+                                    className={cn('bg-muted w-full justify-start')}
                                 >
                                     <Link href={item.href} prefetch>
                                         {item.title}
