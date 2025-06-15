@@ -1,8 +1,7 @@
 import InputError from '@/components/input-error';
 import AppLayout from '@/layouts/app-layout';
 import SettingsLayout from '@/layouts/settings/layout';
-import { type BreadcrumbItem } from '@/types';
-import { Transition } from '@headlessui/react';
+import { Flash, type BreadcrumbItem } from '@/types';
 import { Head, useForm } from '@inertiajs/react';
 import { FormEventHandler, useRef, useState } from 'react';
 
@@ -10,6 +9,7 @@ import HeadingSmall from '@/components/heading-small';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
+import { Bounce, toast, ToastContainer } from 'react-toastify';
 
 const breadcrumbs: BreadcrumbItem[] = [
     {
@@ -37,7 +37,18 @@ export default function Password() {
 
         put(route('password.update'), {
             preserveScroll: true,
-            onSuccess: () => reset(),
+            onSuccess: (data) => {
+                const notify = data.props.flash as Flash;
+                if (notify.success !== null) {
+                    toast.success(notify.success, {});
+                }
+
+                if (notify.error !== null) {
+                    toast.error(notify.error);
+                }
+
+                reset();
+            },
             onError: (errors) => {
                 if (errors.password) {
                     reset('password', 'password_confirmation');
@@ -54,6 +65,19 @@ export default function Password() {
 
     return (
         <AppLayout breadcrumbs={breadcrumbs}>
+            <ToastContainer
+                position="top-right"
+                autoClose={2000}
+                hideProgressBar={false}
+                newestOnTop={false}
+                closeOnClick={false}
+                rtl={false}
+                pauseOnFocusLoss
+                draggable
+                pauseOnHover
+                theme="light"
+                transition={Bounce}
+            />
             <Head title="Configuración del perfil" />
 
             <SettingsLayout>
@@ -135,17 +159,7 @@ export default function Password() {
                         </div>
 
                         <div className="flex items-center justify-end gap-4">
-                            <Button disabled={processing}>Guardar contraseña</Button>
-
-                            <Transition
-                                show={recentlySuccessful}
-                                enter="transition ease-in-out"
-                                enterFrom="opacity-0"
-                                leave="transition ease-in-out"
-                                leaveTo="opacity-0"
-                            >
-                                <p className="text-sm text-neutral-600">Guardado</p>
-                            </Transition>
+                            <Button disabled={processing}>Guardar</Button>
                         </div>
                     </form>
                 </div>

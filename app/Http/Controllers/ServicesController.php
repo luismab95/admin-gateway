@@ -6,6 +6,7 @@ use Illuminate\Http\Request;
 use App\Models\Service;
 use App\Models\Connection as ServerConnection;
 use Illuminate\Support\Facades\Http;
+use Illuminate\Support\Facades\Log;
 use Inertia\Inertia;
 
 class ServicesController extends Controller
@@ -202,10 +203,16 @@ class ServicesController extends Controller
     public function restartGateway()
     {
 
-        $connection = ServerConnection::first();
+        try {
+            $connection = ServerConnection::first();
 
-        $url = $connection->protocol . "://" . $connection->host . ":" . $connection->port;
+            $url = $connection->protocol . "://" . $connection->host . ":" . $connection->port;
 
-        $response = Http::post($url . '/restart-gateway/', []);
+            $response = Http::post($url . '/restart-gateway/', []);
+        } catch (\Exception $e) {
+            Log::error('Error al reiniciar el gateway: ' . $e->getMessage(), [
+                'exception' => $e,
+            ]);
+        }
     }
 }
