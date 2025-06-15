@@ -96,8 +96,8 @@ export default function ListLogs() {
                         </Select>
                     </div>
                     {/* LOGS */}
-                    <div className="bg-foreground border-muted text-background mt-1 h-[600px] w-full overflow-y-auto rounded-md border p-4 opacity-95 md:w-md lg:w-full">
-                        <pre>{log}</pre>
+                    <div className="bg-foreground border-muted text-background mt-1 h-[600px] overflow-auto rounded-md border p-4 opacity-95 md:w-md lg:w-full w-full">
+                        <pre className='max-w-6xl' >{log}</pre>
                     </div>
                 </div>
             </div>
